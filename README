@@ -1,0 +1,16 @@
+Install:
+sudo apt-get install python-imaging
+
+Running on a Laptop:
+% ./photo_booth.py
+
+Running (pi via ssh, needs to run as root for GPIO):
+pi% ./run_photo
+
+Rasberry Pi Setup:
+photo_booth.py makes use of the /tmp partition.  On a default setup, this
+is probably your SD-card, which has slow write performance.  For increased
+performance, make this a ramdisk by modifying your /etc/fstab with the
+following line and reboot:
+tmpfs    /tmp    tmpfs    defaults,noatime,nosuid,size=100m    0 0
+

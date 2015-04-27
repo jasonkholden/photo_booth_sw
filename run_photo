@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export XAUTHORITY=/home/`whoami`/.Xauthority
+sudo ./photo_booth.py
