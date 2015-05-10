@@ -16,6 +16,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+import os
 import pygame, sys
 import pygame.camera
 import PIL
@@ -39,6 +40,7 @@ try:
     rpi_gpio_available = True
     gpio_mode=GPIO.BOARD
     pin_takephoto = 7
+    pin_shutdown  = 7
     pin_alarm     = 18
     print "RPi GPIO Version: " + str(GPIO.VERSION)
 except ImportError:
@@ -144,7 +146,8 @@ def setup_gpio():
     GPIO.setmode(gpio_mode)
     GPIO.setup(pin_takephoto,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
     GPIO.setup(pin_alarm,GPIO.OUT)
-    GPIO.add_event_detect(pin_takephoto, GPIO.RISING, callback=delayed_photo, bouncetime=300) 
+    GPIO.add_event_detect(pin_shutdown, GPIO.RISING, callback=shut_computer_down, bouncetime=300) 
+    #GPIO.add_event_detect(pin_takephoto, GPIO.RISING, callback=delayed_photo, bouncetime=300) 
     GPIO.output(pin_alarm,True)
 
 def delayed_photo(channel):
@@ -161,6 +164,11 @@ def initiate_photo(channel):
         # Produce the final output image
         composite_images ( in_bgimage )
         curShot = 0
+
+def shut_computer_down(channel):  
+    print "Goodbye" 
+    GPIO.output(pin_alarm,False);
+    os.system("sudo halt")
     
 if rpi_gpio_available == True:
     setup_gpio()
