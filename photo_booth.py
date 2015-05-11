@@ -26,6 +26,7 @@ from pygame.locals import *
 import tempfile
 import atexit
 import platform
+import cups
 
 # Toggle the photo led
 def set_photo_led(value):
@@ -39,6 +40,12 @@ try:
 except ImportError:
     picamera_available = False
 
+try:
+    import cups
+    printer_available = True
+except ImportError:
+    printer_available = False
+    
 # See if rasberry pi gpio is available
 try:
     import RPi.GPIO as GPIO
@@ -51,10 +58,10 @@ try:
 except ImportError:
     rpi_gpio_available = False
 
-print "System Detected: " + platform.system()
-print "picamera available," + str(picamera_available)
-print "rpi_gpio available, " + str(rpi_gpio_available)
-
+print "System Detected:    " + platform.system()
+print "picamera available: " + str(picamera_available)
+print "rpi_gpio available: " + str(rpi_gpio_available)
+print "printer available:  " + str(printer_available)
 # set up pygame
 pygame.init()
 
@@ -101,6 +108,23 @@ def cleanup():
 
 atexit.register(cleanup)
 
+def init_printer():
+    global printer_available
+    if printer_available == True:
+    
+        print "Initializing printer"
+        conn = cups.Connection ()
+        printers = conn.getPrinters ()
+        numPrinters = len(conn.getPrinters())
+        print "Number of printers: " + str(numPrinters)
+        if numPrinters == 0:
+            printer_available = False
+        for printer in printers:
+            print printer, printers[printer]["device-uri"]
+    print "printer initialized:  " + str(printer_available)
+            
+init_printer()
+        
 # Quick ping helper
 def isUp(hostname):
 

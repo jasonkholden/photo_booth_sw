@@ -1,5 +1,6 @@
 Install:
 sudo apt-get install python-imaging
+sudo apt-get install cups python-cups
 
 Running on a Laptop:
 % ./photo_booth.py
