@@ -62,7 +62,9 @@ HEIGHT=1024
 # .4 ~= 512x409
 NUM_SHOTS_PER_PRINT=4
 curShot=0
-
+EVENTID_PHOTOTIMER=USEREVENT+0
+timer_going=0
+photo_delay_time_ms=2000
 
 # INIT CAMERA
 if picamera_available == True:
@@ -138,6 +140,15 @@ def composite_images ( bgimage ):
     bgimage.save("out.jpg")
     return
 
+def start_photo_timer(channel):
+    global timer_going
+    if timer_going == 0:
+        timer_going = 1
+        print "Starting photo timer"
+        pygame.time.set_timer(EVENTID_PHOTOTIMER,photo_delay_time_ms)
+    else:
+        print "Photo sequence already initiated, not restarting timer"
+        
 # Setup gpio
 def setup_gpio():
     global gpio_mode
@@ -150,7 +161,8 @@ def setup_gpio():
     GPIO.setup(pin_takephoto,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
     GPIO.setup(pin_alarm,GPIO.OUT)
     #GPIO.add_event_detect(pin_shutdown, GPIO.RISING, callback=shut_computer_down, bouncetime=300) 
-    GPIO.add_event_detect(pin_takephoto, GPIO.RISING, callback=delayed_photo, bouncetime=300) 
+    #GPIO.add_event_detect(pin_takephoto, GPIO.RISING, callback=delayed_photo, bouncetime=300)
+    GPIO.add_event_detect(pin_takephoto, GPIO.RISING, callback=start_photo_timer, bouncetime=300) 
     set_photo_led(False)
 
 def delayed_photo(channel):
@@ -158,6 +170,7 @@ def delayed_photo(channel):
     
 def initiate_photo(channel):
     global curShot
+    global timer_going
     print "Taking a snapshot " + str(curShot)
     # Update the display with the latest image
     set_photo_led(True);
@@ -169,6 +182,8 @@ def initiate_photo(channel):
         # Produce the final output image
         composite_images ( in_bgimage )
         curShot = 0
+        timer_going = 0
+        pygame.time.set_timer(EVENTID_PHOTOTIMER,0)
 
 def shut_computer_down(channel):  
     print "Goodbye" 
@@ -186,10 +201,13 @@ while True :
         if e.type == pygame.QUIT :
             sys.exit()
 
-        # On a Key-Down, trigger a photo-event
+        # On a Key-Down, start the photo timer
         if e.type == pygame.KEYDOWN:
             if e.key == pygame.K_SPACE:
-                initiate_photo(0)
+                start_photo_timer(0)
+        # On a timer event, trigger the photo
+        if e.type == EVENTID_PHOTOTIMER:
+            initiate_photo(0)
                 
     #READ IMAGE AND PUT ON SCREEN
     img = get_current_image_fast( camera )
