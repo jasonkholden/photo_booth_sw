@@ -207,7 +207,10 @@ while True :
                 start_photo_timer(0)
         # On a timer event, trigger the photo
         if e.type == EVENTID_PHOTOTIMER:
-            initiate_photo(0)
+            if timer_going == 1:
+                initiate_photo(0)
+            else:
+		print "Skipping timer due to lag"
                 
     #READ IMAGE AND PUT ON SCREEN
     img = get_current_image_fast( camera )
