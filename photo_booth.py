@@ -26,6 +26,10 @@ from pygame.locals import *
 import tempfile
 import atexit
 
+# Toggle the photo led
+def set_photo_led(value):
+    if (rpi_gpio_available == True):
+        GPIO.output(pin_alarm,value)
 
 # See if the rasberry pi camera is available
 try:
@@ -112,8 +116,7 @@ def get_current_image_fast( camera ):
     else:
         return camera.get_image()
     return
-
-
+        
 # Create the final composited image for printing
 def composite_images ( bgimage ):
     print "Creating final image for printing"
@@ -146,9 +149,9 @@ def setup_gpio():
     GPIO.setmode(gpio_mode)
     GPIO.setup(pin_takephoto,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
     GPIO.setup(pin_alarm,GPIO.OUT)
-    GPIO.add_event_detect(pin_shutdown, GPIO.RISING, callback=shut_computer_down, bouncetime=300) 
-    #GPIO.add_event_detect(pin_takephoto, GPIO.RISING, callback=delayed_photo, bouncetime=300) 
-    GPIO.output(pin_alarm,True)
+    #GPIO.add_event_detect(pin_shutdown, GPIO.RISING, callback=shut_computer_down, bouncetime=300) 
+    GPIO.add_event_detect(pin_takephoto, GPIO.RISING, callback=delayed_photo, bouncetime=300) 
+    set_photo_led(False)
 
 def delayed_photo(channel):
     pygame.event.post(pygame.event.Event(pygame.KEYDOWN,key = pygame.K_SPACE))
@@ -157,8 +160,10 @@ def initiate_photo(channel):
     global curShot
     print "Taking a snapshot " + str(curShot)
     # Update the display with the latest image
+    set_photo_led(True);
     get_current_image_as_jpg(camera, 'image' + str(curShot) + '.jpg')
     print "Finished getting image"
+    set_photo_led(False);
     curShot = curShot + 1
     if curShot == NUM_SHOTS_PER_PRINT:
         # Produce the final output image
