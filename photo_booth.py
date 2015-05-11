@@ -194,17 +194,20 @@ if rpi_gpio_available == True:
     setup_gpio()
 
 print "Press <space> to take a snapshot"
-while True :
+keep_going = 1
+while keep_going == 1:
 
     # Loop Over all events
     for e in pygame.event.get() :
         if e.type == pygame.QUIT :
-            sys.exit()
+            keep_going = 0
 
         # On a Key-Down, start the photo timer
         if e.type == pygame.KEYDOWN:
             if e.key == pygame.K_SPACE:
                 start_photo_timer(0)
+            elif e.key == pygame.K_q:
+                keep_going = 0
         # On a timer event, trigger the photo
         if e.type == EVENTID_PHOTOTIMER:
             if timer_going == 1:
