@@ -25,6 +25,7 @@ from time import sleep
 from pygame.locals import *
 import tempfile
 import atexit
+import platform
 
 # Toggle the photo led
 def set_photo_led(value):
@@ -49,7 +50,8 @@ try:
     print "RPi GPIO Version: " + str(GPIO.VERSION)
 except ImportError:
     rpi_gpio_available = False
-    
+
+print "System Detected: " + platform.system()
 print "picamera available," + str(picamera_available)
 print "rpi_gpio available, " + str(rpi_gpio_available)
 
@@ -98,6 +100,21 @@ def cleanup():
         GPIO.cleanup()
 
 atexit.register(cleanup)
+
+# Quick ping helper
+def isUp(hostname):
+
+    if platform.system() == "Windows":
+        response = os.system("ping "+hostname+" -n 1")
+    else:
+        response = os.system("ping -c 1 " + hostname)
+
+    isUpBool = False
+    if response == 0:
+
+        isUpBool = True
+
+    return isUpBool
 
 # Platform-agonstic function to save snapshot as jpg
 def get_current_image_as_jpg( camera, filename ):
@@ -193,6 +210,7 @@ def shut_computer_down(channel):
 if rpi_gpio_available == True:
     setup_gpio()
 
+print "Connection to internet: " + str(isUp("www.google.com"))
 print "Press <space> to take a snapshot"
 keep_going = 1
 while keep_going == 1:
