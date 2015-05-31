@@ -15,3 +15,5 @@ performance, make this a ramdisk by modifying your /etc/fstab with the
 following line and reboot:
 tmpfs    /tmp    tmpfs    defaults,noatime,nosuid,size=100m    0 0
 
+Printer:
+Install openprinting-gutenprint (ubunt, for Kodak EasyShare G600)
