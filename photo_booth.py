@@ -109,7 +109,7 @@ def cleanup():
 atexit.register(cleanup)
 
 def init_printer():
-    global printer_available
+    global printer_available,printers
     if printer_available == True:
     
         print "Initializing printer"
@@ -122,7 +122,21 @@ def init_printer():
         for printer in printers:
             print printer, printers[printer]["device-uri"]
     print "printer initialized:  " + str(printer_available)
-            
+
+def print_final_image():
+    global printer_available,printers
+    if printer_available == True:
+        print "Printing final image"
+        conn = cups.Connection()
+        printers = conn.getPrinters()
+        printer_name = printers.keys()[0]
+        print "Printing to printer " + str(printer_name)
+        #cups.setUser('pi')
+        conn.printFile(printer_name, "./out.jpg", "Photo Booth",{}) 
+        print "Finished printing"
+    else:
+        print "No printer available, skipping"
+                
 init_printer()
         
 # Quick ping helper
@@ -225,6 +239,8 @@ def initiate_photo(channel):
         curShot = 0
         timer_going = 0
         pygame.time.set_timer(EVENTID_PHOTOTIMER,0)
+        # Print the final image
+        print_final_image()
 
 def shut_computer_down(channel):  
     print "Goodbye" 
