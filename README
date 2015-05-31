@@ -17,3 +17,9 @@ tmpfs    /tmp    tmpfs    defaults,noatime,nosuid,size=100m    0 0
 
 Printer:
 Install openprinting-gutenprint (ubunt, for Kodak EasyShare G600)
+
+Rasberry Pi Printer Setup:
+http://www.howtogeek.com/169679/how-to-add-a-printer-to-your-raspberry-pi-or-other-linux-computer/
+
+http://[the Pi’s IP or hostname]:631
+
