@@ -23,3 +23,12 @@ http://www.howtogeek.com/169679/how-to-add-a-printer-to-your-raspberry-pi-or-oth
 
 http://[the Pi’s IP or hostname]:631
 
+
+Installation of Kernel for PiTFT Plus 480x320 3.5" TFT+Touchscreen for Raspberry Pi - Pi 2 and Model A+ / B+
+See https://learn.adafruit.com/adafruit-pitft-3-dot-5-touch-screen-for-raspberry-pi/easy-install
+
+% curl -SLs https://apt.adafruit.com/add | sudo bash
+% sudo apt-get install raspberrypi-bootloader-adafruit-pitft
+% sudo apt-get install adafruit-pitft-helper
+% sudo adafruit-pitft-helper -t 35r
+% sudo reboot
