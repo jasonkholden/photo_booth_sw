@@ -100,7 +100,7 @@ else:
     camera = pygame.camera.Camera(cameras[0],(WIDTH, HEIGHT))
     camera.start()
     
-screen = pygame.display.set_mode( ( WIDTH, HEIGHT ) )
+screen = pygame.display.set_mode( ( WIDTH, HEIGHT ), pygame.NOFRAME )
 pygame.display.set_caption("pyGame Camera View")
 black = pygame.Color(0, 0, 0)
 textcol = pygame.Color(255, 255, 0)
