@@ -28,6 +28,9 @@ import atexit
 import platform
 import cups
 
+SKIP_GPIO=False
+
+
 # Toggle the photo led
 def set_photo_led(value):
     if (rpi_gpio_available == True):
@@ -57,6 +60,10 @@ try:
     print "RPi GPIO Version: " + str(GPIO.VERSION)
 except ImportError:
     rpi_gpio_available = False
+
+if SKIP_GPIO == False:
+    rpi_gpio_available = False
+
 
 print "System Detected:    " + platform.system()
 print "picamera available: " + str(picamera_available)
