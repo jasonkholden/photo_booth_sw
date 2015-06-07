@@ -1,6 +1,10 @@
 Install:
-sudo apt-get install python-imaging
+sudo apt-get install python-imaging python-picamera
 sudo apt-get install cups python-cups
+
+Enable your camera on your rasberry pi:
+% sudo raspi-config
+Enable the camera
 
 Running on a Laptop:
 % ./photo_booth.py
@@ -31,4 +35,13 @@ See https://learn.adafruit.com/adafruit-pitft-3-dot-5-touch-screen-for-raspberry
 % sudo apt-get install raspberrypi-bootloader-adafruit-pitft
 % sudo apt-get install adafruit-pitft-helper
 % sudo adafruit-pitft-helper -t 35r
+% sudo reboot
+
+
+Autostart X Server to TFT Frame Buffer
+% sudo raspi-config
+Select starting the X server
+Note, the HDMI output is /dev/fb0, we want to use /dev/fb1 as in the
+xorg.conf file controlled here.
+% sudo cp ./xorg.conf /etc/X11/xorg.conf
 % sudo reboot
