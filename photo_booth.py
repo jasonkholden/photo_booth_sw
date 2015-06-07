@@ -31,6 +31,8 @@ import cups
 SKIP_GPIO=False
 
 
+os.chdir("/home/pi/photo_booth_sw")
+
 # Toggle the photo led
 def set_photo_led(value):
     if (rpi_gpio_available == True):
