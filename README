@@ -45,3 +45,11 @@ Note, the HDMI output is /dev/fb0, we want to use /dev/fb1 as in the
 xorg.conf file controlled here.
 % sudo cp ./xorg.conf /etc/X11/xorg.conf
 % sudo reboot
+
+To get the photo_booth_sw to autostart
+% mkdir ~/.config/autostart
+% vi ~/.config/autostart/photo_booth_sw.desktop
+[Desktop Entry]
+Type=Application
+Exec=/home/pi/photo_booth_sw/photo_booth.py
+
