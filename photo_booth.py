@@ -74,8 +74,10 @@ print "printer available:  " + str(printer_available)
 # set up pygame
 pygame.init()
 
-WIDTH=1280
-HEIGHT=1024
+#WIDTH=1280
+#HEIGHT=1024
+WIDTH=480
+HEIGHT=320
 # .5 = 640x512
 # .4 ~= 512x409
 NUM_SHOTS_PER_PRINT=4
