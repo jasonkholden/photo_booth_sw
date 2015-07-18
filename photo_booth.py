@@ -94,6 +94,7 @@ if picamera_available == True:
     camera.vflip = True
     camera.hflip = False
     camera.brightness = 60
+    camera.rotation = 90
 else:
     print "Initializing Native Linux Camera"
     pygame.camera.init()
