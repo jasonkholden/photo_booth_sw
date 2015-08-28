@@ -36,7 +36,7 @@ os.chdir("/home/pi/photo_booth_sw")
 # Toggle the photo led
 def set_photo_led(value):
     if (rpi_gpio_available == True):
-        GPIO.output(pin_alarm,value)
+        GPIO.output(pin_flash_out,value)
 
 # See if the rasberry pi camera is available
 try:
@@ -58,7 +58,7 @@ try:
     gpio_mode=GPIO.BOARD
     pin_takephoto = 16
     pin_shutdown  = 11
-    pin_alarm     = 7
+    pin_flash_out     = 7
     print "RPi GPIO Version: " + str(GPIO.VERSION)
 except ImportError:
     rpi_gpio_available = False
@@ -220,13 +220,13 @@ def start_photo_timer(channel):
 def setup_gpio():
     global gpio_mode
     global pin_takephoto
-    global pin_alarm
+    global pin_flash_out
 
-    print "Setting up GPIO" + str(pin_takephoto)  + "," + str(pin_alarm)
+    print "Setting up GPIO" + str(pin_takephoto)  + "," + str(pin_flash_out)
 
     GPIO.setmode(gpio_mode)
     GPIO.setup(pin_takephoto,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
-    GPIO.setup(pin_alarm,GPIO.OUT)
+    GPIO.setup(pin_flash_out,GPIO.OUT)
     #GPIO.add_event_detect(pin_shutdown, GPIO.RISING, callback=shut_computer_down, bouncetime=300) 
     #GPIO.add_event_detect(pin_takephoto, GPIO.RISING, callback=delayed_photo, bouncetime=300)
     GPIO.add_event_detect(pin_takephoto, GPIO.RISING, callback=start_photo_timer, bouncetime=300) 
@@ -256,7 +256,7 @@ def initiate_photo(channel):
 
 def shut_computer_down(channel):  
     print "Goodbye" 
-    GPIO.output(pin_alarm,False);
+    GPIO.output(pin_flash_out,False);
     os.system("sudo halt")
     
 if rpi_gpio_available == True:
