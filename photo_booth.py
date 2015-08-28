@@ -59,6 +59,7 @@ try:
     pin_takephoto = 16
     pin_shutdown  = 11
     pin_flash_out     = 7
+    pin_internet_out  = 3
     print "RPi GPIO Version: " + str(GPIO.VERSION)
 except ImportError:
     rpi_gpio_available = False
@@ -225,9 +226,17 @@ def setup_gpio():
     print "Setting up GPIO" + str(pin_takephoto)  + "," + str(pin_flash_out)
 
     GPIO.setmode(gpio_mode)
+
+    # Input GPIO Pins
     GPIO.setup(pin_takephoto,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
-    GPIO.setup(pin_flash_out,GPIO.OUT)
-    #GPIO.add_event_detect(pin_shutdown, GPIO.RISING, callback=shut_computer_down, bouncetime=300) 
+    GPIO.setup(pin_shutdown,GPIO.IN)
+
+    # Output GPIO Pins
+    GPIO.setup(pin_flash_out,   GPIO.OUT)
+    GPIO.setup(pin_internet_out,GPIO.OUT)
+
+    # Callbacks for input pins
+    GPIO.add_event_detect(pin_shutdown, GPIO.RISING, callback=shut_computer_down, bouncetime=300) 
     #GPIO.add_event_detect(pin_takephoto, GPIO.RISING, callback=delayed_photo, bouncetime=300)
     GPIO.add_event_detect(pin_takephoto, GPIO.RISING, callback=start_photo_timer, bouncetime=300) 
     set_photo_led(False)
@@ -262,7 +271,16 @@ def shut_computer_down(channel):
 if rpi_gpio_available == True:
     setup_gpio()
 
-print "Connection to internet: " + str(isUp("www.google.com"))
+have_internet=isUp("www.google.com")
+if have_internet == True:
+    print "Turning ON internet status light"
+    GPIO.output(pin_internet_out,True);
+else:
+    print "Turning OFF internet status light"
+    GPIO.output(pin_internet_out,False);
+
+
+print "Connection to internet: " + str(have_internet)
 print "Press <space> to take a snapshot"
 keep_going = 1
 while keep_going == 1:
