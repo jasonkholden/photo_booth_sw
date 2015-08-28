@@ -56,12 +56,15 @@ try:
     import RPi.GPIO as GPIO
     rpi_gpio_available = True
     gpio_mode=GPIO.BOARD
-    pin_takephoto = 16
-    pin_shutdown  = 11
+    pin_takephoto     = 16
+    pin_shutdown      = 11
     pin_flash_out     = 7
     pin_internet_out  = 3
     pin_status_out    = 5
     pin_social_out    = 8
+    pin_social_out    = 8
+    pin_printer_out   = 13
+
     print "RPi GPIO Version: " + str(GPIO.VERSION)
 except ImportError:
     rpi_gpio_available = False
@@ -74,6 +77,9 @@ print "System Detected:    " + platform.system()
 print "picamera available: " + str(picamera_available)
 print "rpi_gpio available: " + str(rpi_gpio_available)
 print "printer available:  " + str(printer_available)
+
+
+
 # set up pygame
 pygame.init()
 
@@ -154,6 +160,8 @@ def print_final_image():
                 
 init_printer()
         
+
+
 # Quick ping helper
 def isUp(hostname):
 
@@ -238,6 +246,7 @@ def setup_gpio():
     GPIO.setup(pin_internet_out,GPIO.OUT)
     GPIO.setup(pin_status_out,  GPIO.OUT)
     GPIO.setup(pin_social_out,  GPIO.OUT)
+    GPIO.setup(pin_printer_out, GPIO.OUT)
 
     # Callbacks for input pins
     GPIO.add_event_detect(pin_shutdown, GPIO.RISING, callback=shut_computer_down, bouncetime=300) 
@@ -248,6 +257,7 @@ def setup_gpio():
     GPIO.output(pin_internet_out,False);
     GPIO.output(pin_status_out,  False);
     GPIO.output(pin_social_out,  False);
+    GPIO.output(pin_printer_out, False);
     set_photo_led(False)
 
 def delayed_photo(channel):
@@ -279,6 +289,13 @@ def shut_computer_down(channel):
     
 if rpi_gpio_available == True:
     setup_gpio()
+
+if printer_available == True:
+    print "Printer is ON"
+    GPIO.output(pin_printer_out, True);
+else:
+    print "Printer is OFF"
+    GPIO.output(pin_printer_out, False);
 
 have_internet=isUp("www.google.com")
 if have_internet == True:
