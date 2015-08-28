@@ -60,6 +60,7 @@ try:
     pin_shutdown  = 11
     pin_flash_out     = 7
     pin_internet_out  = 3
+    pin_status_out    = 5
     print "RPi GPIO Version: " + str(GPIO.VERSION)
 except ImportError:
     rpi_gpio_available = False
@@ -234,11 +235,16 @@ def setup_gpio():
     # Output GPIO Pins
     GPIO.setup(pin_flash_out,   GPIO.OUT)
     GPIO.setup(pin_internet_out,GPIO.OUT)
+    GPIO.setup(pin_status_out,  GPIO.OUT)
 
     # Callbacks for input pins
     GPIO.add_event_detect(pin_shutdown, GPIO.RISING, callback=shut_computer_down, bouncetime=300) 
     #GPIO.add_event_detect(pin_takephoto, GPIO.RISING, callback=delayed_photo, bouncetime=300)
     GPIO.add_event_detect(pin_takephoto, GPIO.RISING, callback=start_photo_timer, bouncetime=300) 
+
+    # default status outputs to 0
+    GPIO.output(pin_internet_out,False);
+    GPIO.output(pin_status_out,  False);
     set_photo_led(False)
 
 def delayed_photo(channel):
@@ -308,3 +314,4 @@ while keep_going == 1:
     screen.blit(img, (0, 0))
     pygame.display.update()
 
+    GPIO.output(pin_status_out,True);
