@@ -56,14 +56,14 @@ try:
     import RPi.GPIO as GPIO
     rpi_gpio_available = True
     gpio_mode=GPIO.BOARD
-    pin_takephoto = 7
-    pin_shutdown  = 7
-    pin_alarm     = 18
+    pin_takephoto = 16
+    pin_shutdown  = 11
+    pin_alarm     = 7
     print "RPi GPIO Version: " + str(GPIO.VERSION)
 except ImportError:
     rpi_gpio_available = False
 
-if SKIP_GPIO == False:
+if SKIP_GPIO == True:
     rpi_gpio_available = False
 
 
