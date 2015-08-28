@@ -61,6 +61,7 @@ try:
     pin_flash_out     = 7
     pin_internet_out  = 3
     pin_status_out    = 5
+    pin_social_out    = 8
     print "RPi GPIO Version: " + str(GPIO.VERSION)
 except ImportError:
     rpi_gpio_available = False
@@ -236,6 +237,7 @@ def setup_gpio():
     GPIO.setup(pin_flash_out,   GPIO.OUT)
     GPIO.setup(pin_internet_out,GPIO.OUT)
     GPIO.setup(pin_status_out,  GPIO.OUT)
+    GPIO.setup(pin_social_out,  GPIO.OUT)
 
     # Callbacks for input pins
     GPIO.add_event_detect(pin_shutdown, GPIO.RISING, callback=shut_computer_down, bouncetime=300) 
@@ -245,6 +247,7 @@ def setup_gpio():
     # default status outputs to 0
     GPIO.output(pin_internet_out,False);
     GPIO.output(pin_status_out,  False);
+    GPIO.output(pin_social_out,  False);
     set_photo_led(False)
 
 def delayed_photo(channel):
