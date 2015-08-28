@@ -56,7 +56,8 @@ try:
     import RPi.GPIO as GPIO
     rpi_gpio_available = True
     gpio_mode=GPIO.BOARD
-    pin_takephoto     = 16
+    pin_takephoto     = 10
+    pin_test_in       = 16
     pin_shutdown      = 11
     pin_flash_out     = 7
     pin_internet_out  = 3
@@ -238,8 +239,9 @@ def setup_gpio():
     GPIO.setmode(gpio_mode)
 
     # Input GPIO Pins
-    GPIO.setup(pin_takephoto,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
-    GPIO.setup(pin_shutdown,GPIO.IN)
+    GPIO.setup(pin_takephoto,GPIO.IN)
+    GPIO.setup(pin_test_in,  GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(pin_shutdown, GPIO.IN)
 
     # Output GPIO Pins
     GPIO.setup(pin_flash_out,   GPIO.OUT)
@@ -252,6 +254,7 @@ def setup_gpio():
     GPIO.add_event_detect(pin_shutdown, GPIO.RISING, callback=shut_computer_down, bouncetime=300) 
     #GPIO.add_event_detect(pin_takephoto, GPIO.RISING, callback=delayed_photo, bouncetime=300)
     GPIO.add_event_detect(pin_takephoto, GPIO.RISING, callback=start_photo_timer, bouncetime=300) 
+    GPIO.add_event_detect(pin_test_in,   GPIO.RISING, callback=start_photo_timer, bouncetime=300) 
 
     # default status outputs to 0
     GPIO.output(pin_internet_out,False);
