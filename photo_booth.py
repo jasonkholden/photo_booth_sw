@@ -205,17 +205,13 @@ def composite_images ( bgimage ):
         cam_image = PIL.Image.open("./image" + str(x) + ".jpg")
         cam_image.thumbnail((512,419), Image.ANTIALIAS)
         if x == 0:
-            bgimage.paste(cam_image,(64,25))
-            bgimage.paste(cam_image,(640,25))
+            bgimage.paste(cam_image,(64,185))
         if x == 1:
-            bgimage.paste(cam_image,(64,469))
-            bgimage.paste(cam_image,(640,469))
+            bgimage.paste(cam_image,(640,185))
         if x == 2:
-            bgimage.paste(cam_image,(64,913))
-            bgimage.paste(cam_image,(640,913))
+            bgimage.paste(cam_image,(64,629))
         if x == 3:
-            bgimage.paste(cam_image,(64,1357))
-            bgimage.paste(cam_image,(640,1357))
+            bgimage.paste(cam_image,(640,629))
     bgimage.save("out.jpg")
     return
 
