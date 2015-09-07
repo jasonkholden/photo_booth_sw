@@ -58,3 +58,6 @@ Adjust Rotation of the Display:
 Modify "rotate" in /boot/config.txt, the line with:
 dtoverlay=pitft35r,rotate=270,speed=42000000,fps=20
 
+
+Facebook integration:
+pi% sudo pip intall facepy
