@@ -53,3 +53,8 @@ To get the photo_booth_sw to autostart
 Type=Application
 Exec=sudo /home/pi/photo_booth_sw/photo_booth.py
 
+
+Adjust Rotation of the Display:
+Modify "rotate" in /boot/config.txt, the line with:
+dtoverlay=pitft35r,rotate=270,speed=42000000,fps=20
+

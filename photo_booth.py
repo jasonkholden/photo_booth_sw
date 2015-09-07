@@ -101,7 +101,7 @@ if picamera_available == True:
     # Initialize camera with picamera library
     print "Initializing Rasberry Pi Camera"
     camera = picamera.PiCamera()
-    camera.vflip = True
+    camera.vflip = False 
     camera.hflip = False
     camera.brightness = 60
     camera.rotation = 90
